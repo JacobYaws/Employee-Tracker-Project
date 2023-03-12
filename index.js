@@ -1,5 +1,6 @@
 const inquirer = require('inquirer');
 const mysql = require('mysql2');
+const cTable = require('console.table');
 
 function mainPrompt() {
   return inquirer
@@ -35,24 +36,26 @@ function mainPrompt() {
       }
     },
     {
-      type: 'input',
+      type: 'list',
       name: 'role_id',
-      message: 'What is the employee\'\s role ID?',
+      message: 'What is the employee\'\s title?',
+      choices: ['Remote Sales', 'Marketing Strategist', 'Principal Software Engineer', 'Janitor'],
       when: (answers) => {
         return answers.home === 'Add Employee'
       }
     },
     {
-      type: 'input',
+      type: 'list',
       name: 'manager_id',
-      message: 'What is the employee\'\s manager ID?',
+      message: 'Who is the employee\'\s manager?',
+      choices: ['Gary Jones', 'Samantha Beckett', 'John Smith', 'Rachel McCarter'],
       when: (answers) => {
         return answers.home === 'Add Employee'
       }
     },
     {
       type: 'input',
-      name: 'updated_title',
+      name: 'title',
       message: 'What is the employee\'\s role?',
       when: (answers) => {
         return answers.home === 'Add Role' || answers.home === 'Update Employee Role'
@@ -60,20 +63,20 @@ function mainPrompt() {
     },
     {
       type: 'input',
-      name: 'updated_salary',
+      name: 'salary',
       message: 'What is the employee\'\s salary?',
       when: (answers) => {
         return answers.home === 'Add Role' || answers.home === 'Update Employee Role'
       }
     },
-    {
-      type: 'updated_input',
-      name: 'updated_department_id',
-      message: 'What is the employee\'\s department ID?',
-      when: (answers) => {
-        return answers.home === 'Add Role' || answers.home === 'Update Employee Role'
-      }
-    },
+    // {
+    //   type: 'input',
+    //   name: 'updated_department_id',
+    //   message: 'What is the employee\'\s department ID?',
+    //   when: (answers) => {
+    //     return answers.home === 'Add Role' || answers.home === 'Update Employee Role'
+    //   }
+    // },
   ])
   .then((answers) => {
     const connection = mysql.createConnection(
@@ -90,56 +93,87 @@ function mainPrompt() {
       console.log('Department added!');
       mainPrompt();
     }
-    if (answers.manager_id) {
-      connection.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ('${answers.first_name}','${answers.last_name}','${answers.role_id}','${answers.manager_id}')`);
-      console.log('Employee added!');
-      mainPrompt();
+    if (answers.home === 'View All Employees') {
+      const query = `SELECT * FROM employee`
+      connection.query(query, (err, res) => {
+        if (err) throw err;
+        console.log('All Employees');
+        console.table(res);
+        mainPrompt();
+      })
     }
-    if (answers.department_id) {
-      connection.query(`INSERT INTO role (title, salary, department_id) VALUES ('${answers.title}','${answers.salary}','${answers.department_id}')`);
-      console.log('Employee role added!');
-      mainPrompt();
+    if (answers.home === 'View All Roles') {
+      const query = `SELECT * FROM role`
+      connection.query(query, (err, res) => {
+        if (err) throw err;
+        console.log('All Roles');
+        console.table(res);
+        mainPrompt();
+      })
     }
-    if (answers.updated_department_id) {
-      connection.query(`UPDATE role SET title='${answers.updated_title}',salary='${answers.updated_salary}',department_id='${answers.updated_department_id}'`);
-      console.log(answers.updated_title);
-      console.log('Employee role added!');
-      // mainPrompt();
+    if (answers.home === 'View All Departments') {
+      const query = `SELECT * FROM department`
+      connection.query(query, (err, res) => {
+        if (err) throw err;
+        console.log('All Departments');
+        console.table(res);
+        mainPrompt();
+      })
     }
-    // viewEmployees();
+    if (answers.home === 'Add Employee') {
+      // const manager_id = answers.manager_id
+      const query = `INSERT INTO employee (first_name, last_name, title, manager_id) VALUES ('${answers.first_name}','${answers.last_name}','${answers.title}','${answers.manager_id}')`
+      // if (manager_id == '') {
+      //   this.manager_id == 1
+      //  };
+      connection.query(query, (err, res) => {
+        if (err) throw err;
+        console.log('Add new employee');
+        console.table(res);
+        mainPrompt();
+      })
+    }
+    if (answers.home === 'Add Role') {
+      const query = `INSERT INTO role (title, salary) VALUES ('${answers.title}','${answers.salary}')`
+      connection.query(query, (err, res) => {
+        if (err) throw err;
+        console.log('Add Employee role');
+        console.table(res);
+        mainPrompt();
+      })
+    }
+    // if (answers.home === 'View All Departments') {
+    //   connection.query(`SHOW TABLES`);
+    //   console.log(connection.query(`SHOW TABLES`));
+    //   // connection.query(`SHOW * FROM employee (first_name, last_name, role_id, manager_id) VALUES ('${answers.first_name}','${answers.last_name}','${answers.role_id}','${answers.manager_id}')`);
+    //   console.log('All Departments');
+    //   // mainPrompt();
+    // }
+    // if (answers.manager_id) {
+    //   connection.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ('${answers.first_name}','${answers.last_name}','${answers.role_id}','${answers.manager_id}')`);
+    //   console.log('Employee added!');
+    //   mainPrompt();
+    // }
+    // if (answers.department_id) {
+    //   connection.query(`INSERT INTO role (title, salary) VALUES ('${answers.title}','${answers.salary}')`);
+    //   console.log('Employee role added!');
+    //   mainPrompt();
+    // }
+    
+    
+    
+    // if (answers.updated_salary) {
+    //   connection.query(`UPDATE role SET title='${answers.updated_title}',salary='${answers.updated_salary}'`);
+    //   console.log('Employee role added!');
+    //   mainPrompt();
+    // }
+
+
+
+    if (answers.home === 'Exit') {
+      connection.end();
+      // connection.destroy();
+    }
   });
 }
 mainPrompt();
-// while (true) {
-//   const x = mainPrompt();
-//   if (x.answers.home === 'Exit') {
-//     break
-//   }
-// }
-  // function viewEmployees(first_name, last_name, role_id, manager_id) {
-  //   connection.query(`SHOW employee (first_name, last_name, role_id, manager_id) VALUES ('${first_name}','${last_name}','${role_id}','${manager_id}')`)
-  // }
-
-  // function viewRoles({title, salary, department_id}) {
-  //   connection.query(`SHOW employee (title, salary, department_id) VALUES ('${title}','${salary}','${department_id}')`)
-  // }
-
-  // function viewDepartments({name}) {
-  //   connection.query(`SHOW department (name) VALUES ('${name}')`)
-  // }
-
-  // function addEmployeeToDb({first_name, last_name, role_id, manager_id}) {
-  //   connection.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ('${first_name}','${last_name}','${role_id}','${manager_id}')`)
-  // }
-
-  // function addDepartmentToDb({name}) {
-  //   connection.query(`INSERT INTO department (name) VALUES ('${name}')`)
-  // }
-
-  // function addEmployeeRoleToDb({title, salary, department_id}) {
-  //   connection.query(`INSERT INTO employee (title, salary, department_id) VALUES ('${title}','${salary}','${department_id}')`)
-  // }
-
-  // function updateEmployeeRoleToDb({title, salary, department_id}) {
-  //   connection.query(`INSERT INTO employee (title, salary, department_id) VALUES ('${title}','${salary}','${department_id}')`)
-  // }
