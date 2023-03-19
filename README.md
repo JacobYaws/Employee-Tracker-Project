@@ -7,7 +7,11 @@ In this project, I was tasked with creating an application that allows a company
 ## Table of Contents
 
 [Install](#install)
+
 [Overview](#overview)
+
+[Screenshots](#screenshots)
+
 [Links](#links)
 
 ## Install
@@ -22,6 +26,10 @@ To use the application, open a terminal that can use node.js, navigate to the fo
 - For this project, I used an inquirer prompt to display the collection of questions that the user can select. The user will then be able to select one of the options and be able to get or input the data needed for the database. Upon finishing the section they are on, the user will be brought back to the list of questions to continue using the app, or exit and close the app. 
 - Each option has a MySQL query that will run once the option is selected. This will gather all of the affected fields across multiple tables to allow the user to access the data needed to complete their action. 
 
+
+## Screenshots
+
+<img src="https://github.com/JacobYaws/Employee-Tracker-Project/blob/main/assets/EmployeeTrackerScreenshot.png">
 
 ## Links
 
