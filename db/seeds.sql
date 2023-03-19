@@ -1,12 +1,12 @@
 INSERT INTO department (name)
-VALUES ("Sales"),
-       ("Marketing"),
-       ("Engineering"); 
+VALUES ("Management"),
+       ("Supervision"),
+       ("Transportation"); 
 
 INSERT INTO role (title, salary, department_id)
-VALUES ("Remote Sales", 45000, 1),
-       ("Marketing Strategist", 70000, 2),
-       ("Principal Software Engineer", 150000, 3);
+VALUES ("Facilities Manager", 110000, 1),
+       ("Warehouse Supervisor", 80000, 2),
+       ("Yard Hostler", 60000, 3);
 
 INSERT INTO employee (first_name, last_name, role_id, manager_id)
 VALUES ("Jacob", "Yaws", 1, NULL),

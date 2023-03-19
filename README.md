@@ -1,31 +1,34 @@
 # Employee-Tracker-Project
-GIVEN a command-line application that accepts user input
-WHEN I start the application
-THEN I am presented with the following options: view all departments, view all roles, view all employees, add a department, add a role, add an employee, and update an employee role
 
-<!-- WHEN I choose to view all departments
-THEN I am presented with a formatted table showing department names and department ids -->
+## Description
 
-WHEN I choose to view all roles
-THEN I am presented with the job title, role id, the department that role belongs to, and the salary for that role
+In this project, I was tasked with creating an application that allows a company to view and add new employees, update employee roles, view and add departments, and view and add roles to the company database using MySQL. 
 
-WHEN I choose to view all employees
-THEN I am presented with a formatted table showing employee data, including employee ids, first names, last names, job titles, departments, salaries, and managers that the employees report to
+## Table of Contents
 
-<!-- WHEN I choose to add a department
-THEN I am prompted to enter the name of the department and that department is added to the database -->
+[Install](#install)
+[Overview](#overview)
+[Links](#links)
 
-<!-- WHEN I choose to add a role
-THEN I am prompted to enter the name, salary, and department for the role and that role is added to the database -->
+## Install
 
-WHEN I choose to add an employee
-THEN I am prompted to enter the employee’s first name, last name, role, and manager, and that employee is added to the database
+Important: 
+MySQL needs to installed on your local machine.
 
-WHEN I choose to update an employee role
-THEN I am prompted to select an employee to update and their new role and this information is updated in the database
+To use the application, open a terminal that can use node.js, navigate to the folder containing the application and run <npm install>. After the previous install is complete, log into MySQL by using <mysql -u root -p>. After logging into MySQL, run <use company_db;>, <node ./db/schema.sql;>, and <node ./db/seeds.sql;> to seed the database. After completion, you will need to exit MySQL by running <exit>. Once you have exited, run <node index.js> to start using the application!
+
+## Overview
+
+- For this project, I used an inquirer prompt to display the collection of questions that the user can select. The user will then be able to select one of the options and be able to get or input the data needed for the database. Upon finishing the section they are on, the user will be brought back to the list of questions to continue using the app, or exit and close the app. 
+- Each option has a MySQL query that will run once the option is selected. This will gather all of the affected fields across multiple tables to allow the user to access the data needed to complete their action. 
 
 
+## Links
 
+-Github link: https://github.com/JacobYaws/Employee-Tracker-Project
 
+    -To download, navigate to the repository and click on the green 'Code' button. Copy the ssh link and clone it in a terminal by using 'git clone git@github.com:JacobYaws/Employee-Tracker-Project.git'
+
+-Demonstrational video - https://drive.google.com/file/d/1SAf9S-Nh-dXuhv9cFwUrnwA-y5OuXKrM/view
 
         
